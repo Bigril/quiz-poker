@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Покер на Знания</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .question, .round {
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        input[type="number"] {
+            width: 80px;
+            padding: 10px;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .bets {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Покер на Знания</h1>
+        <div class="question" id="question">Вопрос: Сколько ног у паука?</div>
+
+        <div class="round" id="round-info">Раунд: 1 (Ставки)</div>
+
+        <div class="controls">
+            <div>
+                <label for="bet">Ваша ставка: </label>
+                <input type="number" id="bet" min="1" max="100" value="10">
+            </div>
+            <button id="place-bet">Поставить</button>
+        </div>
+
+        <div class="bets" id="bets-display">Ставки игроков появятся здесь.</div>
+
+        <div class="controls">
+            <button id="next-round" disabled>Следующий раунд</button>
+        </div>
+
+        <div class="round" id="hints" style="display: none;">
+            <div id="hint1">Подсказка 1: Это в два раза больше, чем у кошки.</div>
+            <div id="hint2" style="display: none;">Подсказка 2: Количество соответствует числу планет в Солнечной системе (по старым учебникам).</div>
+            <div id="hint3" style="display: none;">Подсказка 3: У паука есть ровно половина ног, если считать лапки у двух сороконожек.</div>
+        </div>
+
+        <div class="controls">
+            <button id="show-answer" disabled>Показать ответ</button>
+        </div>
+
+        <div id="answer" style="display: none;">Правильный ответ: 8</div>
+    </div>
+
+    <script>
+        let round = 1;
+        const maxRounds = 4;
+        const question = document.getElementById("question");
+        const roundInfo = document.getElementById("round-info");
+        const hint1 = document.getElementById("hint1");
+        const hint2 = document.getElementById("hint2");
+        const hint3 = document.getElementById("hint3");
+        const hints = [hint1, hint2, hint3];
+        const betsDisplay = document.getElementById("bets-display");
+        const answer = document.getElementById("answer");
+        
+        document.getElementById("place-bet").addEventListener("click", () => {
+            const bet = document.getElementById("bet").value;
+            betsDisplay.innerHTML += `<p>Игрок поставил ${bet} очков.</p>`;
+            document.getElementById("next-round").disabled = false;
+        });
+
+        document.getElementById("next-round").addEventListener("click", () => {
+            if (round < maxRounds) {
+                round++;
+                roundInfo.textContent = `Раунд: ${round}`;
+                if (round - 1 <= hints.length) {
+                    hints[round - 2].style.display = "block";
+                }
+                if (round === maxRounds) {
+                    document.getElementById("show-answer").disabled = false;
+                }
+            }
+        });
+
+        document.getElementById("show-answer").addEventListener("click", () => {
+            answer.style.display = "block";
+        });
+    </script>
+</body>
+</html>
